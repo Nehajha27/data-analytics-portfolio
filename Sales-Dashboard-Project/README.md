@@ -10,7 +10,12 @@ A comprehensive data analytics project that analyzes sales data to identify tren
 - [Tools & Technologies](#tools--technologies)
 - [Methodology](#methodology)
 - [Key Insights](#key-insights)
+- [Usage & Setup](#usage--setup)
+- [Data Dictionary](#data-dictionary)
+- [Example SQL Queries](#example-sql-queries)
 - [Future Enhancements](#future-enhancements)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## 📊 Project Overview
 
@@ -48,29 +53,29 @@ Sales-Dashboard-Project/
 ### Prerequisites
 
 - Tableau Desktop or Tableau Public (for viewing dashboards)
-- SQL database or SQL client (SQL Server, MySQL, PostgreSQL, etc.)
-- Python 3.x or similar for data processing (optional)
+- SQL database or SQL client (SQL Server, MySQL, PostgreSQL, SQLite, etc.)
+- Python 3.x for optional data processing
 
 ### Setup Instructions
 
-1. **Review the raw data** in the `data/` folder
-2. **Run SQL queries** from the `sql/` folder to analyze and transform data
-3. **View the dashboards** using the Tableau files in the `tableau/` folder
-4. Refer to the individual `README.md` files in each folder for detailed instructions
+1. **Inspect the data** in the `data/` folder and open `data/README.md` for notes
+2. **Run SQL queries** in the `sql/` folder against your database
+3. **Open Tableau** workbooks in the `tableau/` folder using Tableau Desktop or Tableau Public
+4. If you use Python scripts for preprocessing, run them locally (see `data/README.md` if present)
 
 ## 🛠️ Tools & Technologies
 
-- **Data Processing**: SQL, Python (if applicable)
+- **Data Processing**: SQL, Python (optional)
 - **Visualization**: Tableau
-- **Data Storage**: SQL-based database
-- **Analysis Tools**: SQL queries for data aggregation and analysis
+- **Data Storage**: Relational database (Postgres, MySQL, SQLite, etc.)
+- **Analysis Tools**: SQL queries for aggregations and metrics
 
 ## 📈 Methodology
 
-1. **Data Collection & Cleaning** - Raw data is sourced, cleaned, and validated in the data folder
-2. **Data Analysis** - SQL queries extract insights and transform data into useful metrics
-3. **Visualization** - Tableau creates interactive dashboards for stakeholder presentations
-4. **Insights** - Key findings are documented and presented through the dashboard
+1. **Data Collection & Cleaning** - Raw data is sourced, cleaned, and validated in the `data/` folder
+2. **Data Analysis** - SQL queries (in `sql/`) extract insights and compute metrics
+3. **Visualization** - Tableau workbooks present interactive dashboards and charts
+4. **Insights & Recommendations** - Findings are summarized for stakeholders
 
 ## 💡 Key Insights
 
@@ -80,6 +85,77 @@ Sales-Dashboard-Project/
 - Seasonal variations and anomalies
 - Opportunities for revenue optimization
 
+## 🧩 Usage & Setup
+
+Here are example commands and patterns you can adapt to your environment:
+
+- Run a SQL file against a PostgreSQL database:
+
+```bash
+psql -d sales_db -f sql/your_query.sql
+```
+
+- Run a SQL file against SQLite (example):
+
+```bash
+sqlite3 sales.db < sql/your_query.sql
+```
+
+- Run a Python preprocessing script (if present):
+
+```bash
+python scripts/clean_data.py --input data/raw.csv --output data/cleaned.csv
+```
+
+- Open Tableau workbooks: open files in the `tableau/` folder with Tableau Desktop or Tableau Public (double-click .twb/.twbx files)
+
+## 🧾 Data Dictionary (sample)
+
+| Field | Type | Description |
+|-------|------|-------------|
+| order_id | string/int | Unique identifier for the order |
+| order_date | date | Date when the order was placed |
+| customer_id | string/int | Unique customer identifier |
+| product_id | string/int | Unique product identifier |
+| quantity | integer | Number of units sold |
+| unit_price | numeric | Price per unit at time of sale |
+| total_sales | numeric | Calculated as `quantity * unit_price` |
+| region | string | Geographic region for the sale |
+
+(Adjust field names to match your datasets in `data/`.)
+
+## 🔎 Example SQL Queries
+
+- Top 10 products by units sold:
+
+```sql
+SELECT product_id, SUM(quantity) AS total_units
+FROM sales
+GROUP BY product_id
+ORDER BY total_units DESC
+LIMIT 10;
+```
+
+- Monthly sales trend:
+
+```sql
+SELECT DATE_TRUNC('month', order_date) AS month, SUM(quantity * unit_price) AS monthly_revenue
+FROM sales
+GROUP BY month
+ORDER BY month;
+```
+
+- Top regions by revenue:
+
+```sql
+SELECT region, SUM(quantity * unit_price) AS revenue
+FROM sales
+GROUP BY region
+ORDER BY revenue DESC;
+```
+
+See the `sql/` folder for saved queries and examples.
+
 ## 🔄 Future Enhancements
 
 - [ ] Automated data refresh processes
@@ -88,8 +164,20 @@ Sales-Dashboard-Project/
 - [ ] Additional customer segmentation analysis
 - [ ] Integration with additional data sources
 
+## Contributing
+
+- Contributions are welcome — please open an issue or pull request.
+- Describe changes clearly and include sample data or SQL used for validation.
+- Add tests or example outputs when adding or changing analysis logic.
+
+## License
+
+This repository does not currently include a license. Add a `LICENSE` file (e.g., MIT, Apache-2.0) if you want to permit reuse.
+
 ---
 
-**Last Updated:** February 2026
+**Last Updated:** 2026-02-07
+
+**Current branch:** Radhe
 
 For questions or contributions, please refer to the individual README files in each folder.
